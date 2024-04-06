@@ -13,7 +13,7 @@ const timer = document.querySelector('#timer');
 
 const contagemRegressiva = () => {
     if (tempoDecorridoEmSegundos <= 0) {
-        // audioTempoFinalizado.play();
+        audioTempoFinalizado.play();
         alert('Tempo finalizado');
         zerar();
         return;
