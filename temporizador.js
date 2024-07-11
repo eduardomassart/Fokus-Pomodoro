@@ -3,6 +3,7 @@ const startPauseSpan = document.querySelector('#start-pause span');
 const startPauseIcon = document.querySelector('.app__card-primary-butto-icon');
 
 let tempoDecorridoEmSegundos = tempoFoco;
+let LembrançaTempoContexto = tempoFoco;
 let intervaloId = null;
 
 const audioPlay = new Audio('./sons/play.wav');
@@ -16,6 +17,12 @@ const contagemRegressiva = () => {
         audioTempoFinalizado.play();
         alert('Tempo finalizado');
         zerar();
+        redefinirTimer();
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+        if (focoAtivo) {
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento);
+        }
         return;
     }
     tempoDecorridoEmSegundos -= 1;
@@ -27,6 +34,13 @@ function zerar() {
     intervaloId = null;
 }
 
+function redefinirTimer () {
+    tempoDecorridoEmSegundos = LembrançaTempoContexto;
+    mostrarTempo();
+    startPauseSpan.textContent = 'Começar';
+    startPauseIcon.setAttribute('src', './imagens/play_arrow.png')    
+}
+
 function iniciarOuPausar() {
     if (intervaloId) {
         zerar();
@@ -35,7 +49,7 @@ function iniciarOuPausar() {
         audioPause.play();
         return;
     }
-    
+
     startPauseSpan.textContent = 'Pausar';
     startPauseIcon.setAttribute('src', './imagens/pause.png')
     audioPlay.play();
@@ -46,7 +60,7 @@ startPauseBotao.addEventListener('click', iniciarOuPausar);
 
 function mostrarTempo() {
     const tempo = new Date(tempoDecorridoEmSegundos * 1000);
-    const tempoFormatado = tempo.toLocaleTimeString('pt-br', {minute: '2-digit', second: '2-digit'});
+    const tempoFormatado = tempo.toLocaleTimeString('pt-br', { minute: '2-digit', second: '2-digit' });
     timer.innerHTML = `${tempoFormatado}`;
 }
 

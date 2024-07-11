@@ -3,9 +3,9 @@ const html = document.querySelector('html');
 const botaoFoco = document.querySelector('.app__card-button--foco');
 const botaoCurto = document.querySelector('.app__card-button--curto');
 const botaoLongo = document.querySelector('.app__card-button--longo');
-const tempoFoco = 1500;
-const tempoCurto = 300;
-const tempoLongo = 900;
+const tempoFoco = 15;
+const tempoCurto = 3;
+const tempoLongo = 9;
 
 const botoes = document.querySelectorAll('.app__card-button');
 const banner = document.querySelector('.app__image');
@@ -27,6 +27,7 @@ botaoFoco.addEventListener('click', () => {
     alteraContexto('foco');
     botaoFoco.classList.add('active');
     tempoDecorridoEmSegundos = tempoFoco;
+    LembrançaTempoContexto = tempoFoco;
     mostrarTempo();
 })
 
@@ -34,6 +35,7 @@ botaoCurto.addEventListener('click', () => {
     alteraContexto('descanso-curto');
     botaoCurto.classList.add('active');
     tempoDecorridoEmSegundos = tempoCurto;
+    LembrançaTempoContexto = tempoCurto;
     mostrarTempo();
 })
 
@@ -41,6 +43,7 @@ botaoLongo.addEventListener('click', () => {
     alteraContexto('descanso-longo');
     botaoLongo.classList.add('active');
     tempoDecorridoEmSegundos = tempoLongo;
+    LembrançaTempoContexto = tempoLongo;
     mostrarTempo();
 })
 
