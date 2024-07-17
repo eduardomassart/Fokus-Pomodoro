@@ -5,7 +5,10 @@ const textarea = document.querySelector('.app__form-textarea');
 const ulTarefa = document.querySelector('.app__section-task-list');
 const paragrafoDescricaoTarefa = document.querySelector('.app__section-active-task-description');
 
-const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+const btnRemoverConcluidas = document.querySelector('#btn-remover-concluidas');
+const btnRemoverTodas = document.querySelector('#btn-remover-todas');
+
+let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 let tarefaSelecionada = null;
 let liTarefaSelecionada = null;
 
@@ -49,14 +52,14 @@ function criaElementoTarefa(tarefa) {
     li.append(paragrafo);
     li.append(botao);
 
-    if(tarefa.completa) {
+    if (tarefa.completa) {
         li.classList.add('app__section-task-list-item-complete');
         botao.setAttribute('disabled', 'true');
     } else {
         li.onclick = () => {
             const itensSelecionados = document.querySelectorAll('.app__section-task-list-item-active');
             itensSelecionados.forEach(item => item.classList.remove('app__section-task-list-item-active'));
-    
+
             if (tarefaSelecionada == tarefa) {
                 paragrafoDescricaoTarefa.textContent = '';
                 tarefaSelecionada = null;
@@ -69,7 +72,6 @@ function criaElementoTarefa(tarefa) {
             li.classList.add('app__section-task-list-item-active');
         }
     }
-
 
     return li;
 }
@@ -114,3 +116,18 @@ document.addEventListener('FocoFinalizado', () => {
         atualizarTarefas();
     }
 })
+
+function removerTarefas(somenteConcluidas) {
+    let selector = somenteConcluidas ? ".app__section-task-list-item-complete" : ".app__section-task-list-item";
+
+    document.querySelectorAll(selector).forEach(elemento => {
+        elemento.remove();
+    });
+
+    tarefas = somenteConcluidas ? tarefas.filter((tarefa) => !tarefa.completa) : [];
+
+    atualizarTarefas();
+}
+
+btnRemoverConcluidas.onclick = () => removerTarefas(true);
+btnRemoverTodas.onclick = () => removerTarefas(false);
